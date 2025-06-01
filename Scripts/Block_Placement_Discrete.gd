@@ -142,7 +142,7 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("right_click"):
 		if collided_object:
 			if collided_object.get_layer_mask_value(3):
-				collided_object.queue_free()
+				collided_object.owner.queue_free()
 	
 	if Input.is_action_just_pressed("e"):
 		if building_on:

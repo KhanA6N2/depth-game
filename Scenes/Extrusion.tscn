@@ -17,12 +17,16 @@ albedo_color = Color(1, 0, 0, 1)
 [node name="CSGBox3D5" type="CSGBox3D" parent="."]
 layers = 4
 use_collision = true
+collision_layer = 2
+collision_mask = 0
 size = Vector3(0.98, 0.1, 0.98)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.495, 0, 0)
 layers = 4
 use_collision = true
+collision_layer = 2
+collision_mask = 0
 size = Vector3(0.01, 0.1, 1)
 material = SubResource("StandardMaterial3D_wec01")
 
@@ -30,6 +34,8 @@ material = SubResource("StandardMaterial3D_wec01")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.495, 0, 0)
 layers = 4
 use_collision = true
+collision_layer = 2
+collision_mask = 0
 size = Vector3(0.01, 0.1, 1)
 material = SubResource("StandardMaterial3D_0262w")
 
@@ -37,6 +43,8 @@ material = SubResource("StandardMaterial3D_0262w")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.495)
 layers = 4
 use_collision = true
+collision_layer = 2
+collision_mask = 0
 size = Vector3(0.98, 0.1, 0.01)
 material = SubResource("StandardMaterial3D_ntjgp")
 
@@ -44,5 +52,7 @@ material = SubResource("StandardMaterial3D_ntjgp")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.495)
 layers = 4
 use_collision = true
+collision_layer = 2
+collision_mask = 0
 size = Vector3(0.98, 0.1, 0.01)
 material = SubResource("StandardMaterial3D_ogofl")

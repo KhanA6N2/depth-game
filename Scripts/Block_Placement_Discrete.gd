@@ -150,9 +150,9 @@ func _process(delta: float) -> void:
 	
 	if ray_hit and building_on:
 		if not collided_object.get_layer_mask_value(1):
-			extrusion_distance_label.text = "Can't place here"
+			extrusion_distance_label.text = str(extrusion_distance) + " (Can't place here)"
 		elif extrusion_distance * extrusion_distance > ray_origin.distance_squared_to(ray_hit):
-			extrusion_distance_label.text = "Too far"
+			extrusion_distance_label.text = str(extrusion_distance) + " (Too far)"
 		else:
 			extrusion_distance_label.text = str(extrusion_distance)
 		extrusion_distance_limit.position.x = 640 * ray_origin.distance_to(ray_hit) / 20

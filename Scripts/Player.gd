@@ -48,7 +48,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 	
 	# Handle sprint.
-	if Input.is_action_pressed("sprint"):
+	if Input.is_action_pressed("shift"):
 		speed = SPRINT_SPEED
 	else:
 		speed = WALK_SPEED

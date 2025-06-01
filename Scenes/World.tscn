@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cw61r74caqr3c"]
+[gd_scene load_steps=20 format=3 uid="uid://cw61r74caqr3c"]
 
 [ext_resource type="Script" uid="uid://42nkmre6b3ht" path="res://Scripts/Player.gd" id="1_a02cp"]
 [ext_resource type="Script" uid="uid://d1wduwlo2weam" path="res://Scripts/Block_Placement_Discrete.gd" id="1_q2d71"]
@@ -42,13 +42,6 @@ render_priority = 0
 shader = ExtResource("4_gjpho")
 shader_parameter/head_position = Vector3(0, 0, 0)
 shader_parameter/distance_cutoff = 20.0
-
-[sub_resource type="Gradient" id="Gradient_docxa"]
-offsets = PackedFloat32Array(0, 0.0114286)
-colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_5odek"]
-gradient = SubResource("Gradient_docxa")
 
 [sub_resource type="Gradient" id="Gradient_820l3"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
@@ -144,7 +137,6 @@ offset_bottom = 98.0
 max_value = 20.0
 step = 0.25
 value = 20.0
-texture_over = SubResource("GradientTexture1D_5odek")
 texture_progress = ExtResource("8_kn06e")
 
 [node name="Label" type="Label" parent="Control/ExtrusionDistanceBar"]
@@ -158,6 +150,12 @@ theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="Control/ExtrusionDistanceBar"]
+layout_mode = 0
+offset_right = 12.0
+offset_bottom = 48.0
+color = Color(0, 0, 0, 1)
 
 [node name="ExtrusionAngleBarPositive" type="TextureProgressBar" parent="Control"]
 layout_mode = 0

@@ -8,6 +8,7 @@ extends Node3D
 @onready var extrusion_shadow = $Extrusion_Shadow
 @onready var extrusion_distance_bar = $Control/ExtrusionDistanceBar
 @onready var extrusion_distance_label = $Control/ExtrusionDistanceBar/Label
+@onready var extrusion_distance_limit := $Control/ExtrusionDistanceBar/ColorRect
 @onready var extrusion_angle_bar_neg = $Control/ExtrusionAngleBarNegative
 @onready var extrusion_angle_bar_pos = $Control/ExtrusionAngleBarPositive
 @onready var extrusion_angle_label = $Control/ExtrusionAngleBarNegative/Label
@@ -84,8 +85,12 @@ func _process(delta: float) -> void:
 		# Prevent extrusion distance from being larger than ray cast
 		#if collided_object.get_layer_mask_value(1) and extrusion_distance * extrusion_distance > ray_origin.distance_squared_to(ray_hit):
 			#extrusion_distance = floor(ray_origin.distance_to(ray_hit) * 4. + 1.) / 4.
-		if not collided_object.get_layer_mask_value(1) or extrusion_distance * extrusion_distance > ray_origin.distance_squared_to(ray_hit):
+		if not collided_object.get_layer_mask_value(1):
 			ray.material.albedo_color = Color(0., 1., 0., 1.)
+			extrusion_distance_label.text = "Incompatible surface"
+		elif extrusion_distance * extrusion_distance > ray_origin.distance_squared_to(ray_hit):
+			ray.material.albedo_color = Color(0., 0., 1., 1.)
+			extrusion_distance_label.text = "Too far"
 		else:
 			ray.material.albedo_color = Color(0., 0., 0., 1.)
 	else:
@@ -142,7 +147,15 @@ func _process(delta: float) -> void:
 			building_on = true
 	
 	extrusion_distance_bar.value = extrusion_distance
-	extrusion_distance_label.text = str(extrusion_distance)
+	
+	if ray_hit and building_on:
+		if not collided_object.get_layer_mask_value(1):
+			extrusion_distance_label.text = "Can't place here"
+		elif extrusion_distance * extrusion_distance > ray_origin.distance_squared_to(ray_hit):
+			extrusion_distance_label.text = "Too far"
+		else:
+			extrusion_distance_label.text = str(extrusion_distance)
+		extrusion_distance_limit.position.x = 640 * ray_origin.distance_to(ray_hit) / 20
 	if extrusion_angle <= 0:
 		extrusion_angle_bar_neg.value = -(extrusion_angle + 10)
 		extrusion_angle_bar_pos.value = 0
@@ -150,6 +163,9 @@ func _process(delta: float) -> void:
 		extrusion_angle_bar_pos.value = extrusion_angle
 		extrusion_angle_bar_neg.value = -10
 	extrusion_angle_label.text = str(extrusion_angle)
+	if not building_on:
+		extrusion_distance_label.text = ""
+		extrusion_angle_label.text = ""
 
 func _place_extrusion(ray_origin : Vector3, ray_hit : Vector3, ray_extrusion : Vector3) -> void:
 	var extrusion : CSGBox3D = CSGBox3D.new()

@@ -13,8 +13,8 @@ extends Node3D
 @onready var extrusion_angle_bar_pos = $Control/ExtrusionAngleBarPositive
 @onready var extrusion_angle_label = $Control/ExtrusionAngleBarNegative/Label
 
+# Instantiate scene https://www.youtube.com/watch?v=ZwXPV5v9NaU
 @export var extrusion_scene : PackedScene
-# Instantiate object https://www.reddit.com/r/godot/comments/fsz77h/how_do_you_instantiate_an_object/
 
 var distance_cutoff
 var ray_length

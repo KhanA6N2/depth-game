@@ -1,3 +1,4 @@
+# Alt: Can place extrusions on prev extrusions but not the one you're currently standing on
 extends Node3D
 
 @onready var shader : ShaderMaterial = $CharacterBody3D/Head/Camera3D/MeshInstance3D.get_surface_override_material(0)
@@ -12,8 +13,6 @@ extends Node3D
 @onready var extrusion_angle_bar_neg = $Control/ExtrusionAngleBarNegative
 @onready var extrusion_angle_bar_pos = $Control/ExtrusionAngleBarPositive
 @onready var extrusion_angle_label = $Control/ExtrusionAngleBarNegative/Label
-
-@export var extrusion_scene : PackedScene
 # Instantiate object https://www.reddit.com/r/godot/comments/fsz77h/how_do_you_instantiate_an_object/
 
 var distance_cutoff
@@ -22,13 +21,14 @@ var extrusion_default = 1.
 var extrusion_distance = extrusion_default
 var extrusion_angle = 0
 var building_on = true
+var prev_extrusion
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	# Setting shader parameter https://www.youtube.com/watch?v=6-eIEFPcvrU
 	shader.set_shader_parameter("head_position",head.global_position)
 	distance_cutoff = shader.get_shader_parameter("distance_cutoff")
@@ -51,11 +51,13 @@ func _process(_delta: float) -> void:
 	
 	# Ray-casting https://docs.godotengine.org/en/stable/classes/class_raycast3d.html#class-raycast3d
 	var space_state = get_world_3d().direct_space_state
-	var ray_origin = camera.global_position
-	var look_direction = -camera.global_basis.z
-	var ray_extrusion = ray_origin + look_direction * extrusion_distance + extrusion_angle/10. * camera.global_basis.y
+	var camera_position = camera.global_position
+	var camera_basis = camera.global_basis
+	var look_direction = -camera_basis.z
+	var ray_origin = camera_position
+	var ray_extrusion = ray_origin + look_direction * extrusion_distance + extrusion_angle/10. * camera_basis.y
 	var ray_hit
-	ray_length = distance_cutoff
+	var ray_length = distance_cutoff
 	var collided_object
 	#var collided_object
 	if ray_length:
@@ -79,11 +81,7 @@ func _process(_delta: float) -> void:
 		if ray_origin.distance_squared_to(ray_extrusion) < ray_origin.distance_squared_to(ray_hit) and collided_object.get_layer_mask_value(1):
 			extrusion_shadow.visible = true
 			extrusion_shadow.position = ray_extrusion
-			# Fixed error here https://forum.godotengine.org/t/process-node-origin-and-target-are-in-the-same-position-look-at-failed-godot-4-version/4357
-			if ray_extrusion.is_equal_approx(Vector3(ray_hit.x, ray_extrusion.y, ray_hit.z)):
-				return
-			else:
-				extrusion_shadow.look_at_from_position(ray_extrusion, Vector3(ray_hit.x, ray_extrusion.y, ray_hit.z), Vector3(0, 1, 0))
+			extrusion_shadow.look_at_from_position(ray_extrusion, Vector3(ray_hit.x, ray_extrusion.y, ray_hit.z), Vector3(0, 1, 0))
 		else:
 			extrusion_shadow.visible = false
 		# Prevent extrusion distance from being larger than ray cast
@@ -137,11 +135,11 @@ func _process(_delta: float) -> void:
 	# Place extrusion
 	if extrusion_shadow.visible:
 		if Input.is_action_just_pressed("left_click"):
-			_place_extrusion(ray_hit, ray_extrusion)
+			_place_extrusion(ray_origin, ray_hit, ray_extrusion)
 	
 	if Input.is_action_just_pressed("right_click"):
 		if collided_object:
-			if collided_object.get_layer_mask_value(3):
+			if collided_object.get_layer_mask_value(3) or collided_object.get_layer_mask_value(4):
 				collided_object.queue_free()
 	
 	if Input.is_action_just_pressed("e"):
@@ -173,7 +171,18 @@ func _process(_delta: float) -> void:
 		extrusion_distance_label.text = ""
 		extrusion_angle_label.text = ""
 
-func _place_extrusion(ray_hit : Vector3, ray_extrusion : Vector3) -> void:
-	var extrusion : Node3D = extrusion_scene.instantiate()
+func _place_extrusion(ray_origin : Vector3, ray_hit : Vector3, ray_extrusion : Vector3) -> void:
+	if prev_extrusion:
+		prev_extrusion.set_layer_mask_value(1,true)
+		prev_extrusion.set_layer_mask_value(3,false)
+		prev_extrusion.set_layer_mask_value(4,true)
+	var extrusion : CSGBox3D = CSGBox3D.new()
+	var camera_position = camera.global_position
+	var camera_basis = camera.global_basis
 	extrusion.look_at_from_position(ray_extrusion, Vector3(ray_hit.x, ray_extrusion.y, ray_hit.z), Vector3(0, 1, 0))
+	extrusion.size = Vector3(1., 0.1, 1.)
+	extrusion.use_collision = true
+	extrusion.set_layer_mask_value(1,false)
+	extrusion.set_layer_mask_value(3,true)
 	add_child(extrusion)
+	prev_extrusion = extrusion

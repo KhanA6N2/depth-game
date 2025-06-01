@@ -8,6 +8,7 @@ uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_n
 uniform vec3 head_position;
 uniform float distance_cutoff = 20.;
 
+// Function from https://www.reddit.com/r/godot/comments/1e2ijko/godot_spatial_shaders_are_not_linear/
 vec3 srgb_to_linear(vec3 color){
 	return mix(pow((color.rgb + vec3(0.055)) * (1.0 / (1.0 + 0.055)), vec3(2.4)),color.rgb * (1.0 / 12.92),lessThan(color.rgb, vec3(0.04045)));}
 

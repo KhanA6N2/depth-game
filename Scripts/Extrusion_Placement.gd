@@ -128,6 +128,7 @@ func _process(delta: float) -> void:
 		extrusion_angle_label.text = ""
 		extrusion_killer_ray.visible = false
 		extrusion_shadow.visible = false
+		invalid_extrusion_shadow.visible = false
 	
 	if extrusion_angle <= 0:
 		extrusion_angle_bar_neg.value = -(extrusion_angle + 10)

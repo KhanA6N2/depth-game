@@ -134,6 +134,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
 [node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Head"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/Head/Camera3D"]
+visible = false
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_p70al")
 surface_material_override/0 = SubResource("ShaderMaterial_45d1s")
@@ -199,25 +200,25 @@ collision_mask = 0
 size = Vector3(2.8, 0.1, 15)
 
 [node name="NonBuildableSurface4" parent="." instance=ExtResource("8_mxx6n")]
-transform = Transform3D(-4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, -1.45, 18, -35)
+transform = Transform3D(-4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, -1.45, 19.5, -35)
 collision_layer = 2
 collision_mask = 0
-size = Vector3(7, 0.1, 18)
+size = Vector3(7, 0.1, 21)
 
 [node name="NonBuildableSurface5" parent="." instance=ExtResource("8_mxx6n")]
-transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 1.45, 18, -35)
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 1.45, 19.5, -35)
 collision_layer = 2
 collision_mask = 0
-size = Vector3(7, 0.1, 18)
+size = Vector3(7, 0.1, 21)
 
 [node name="NonBuildableSurface6" parent="." instance=ExtResource("8_mxx6n")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 19.5, -31.55)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 21, -31.55)
 collision_layer = 2
 collision_mask = 0
-size = Vector3(2.8, 0.1, 15)
+size = Vector3(2.8, 0.1, 18)
 
 [node name="NonBuildableSurface7" parent="." instance=ExtResource("8_mxx6n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 26.95, -35.05)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.95, -35.05)
 collision_layer = 2
 collision_mask = 0
 size = Vector3(2.8, 0.1, 6.9)

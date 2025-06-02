@@ -173,7 +173,7 @@ func _process(delta: float) -> void:
 			extrusion_distance = 1.0
 	
 	# Place extrusion
-	if valid_collision:
+	if within_ray_length and valid_collision:
 		if Input.is_action_just_pressed("left_click"):
 			_place_extrusion(max_distance, camera_position, camera_basis, ray_extrusion)
 	

@@ -108,7 +108,7 @@ func _process(delta: float) -> void:
 				invalid_extrusion_shadow.visible = true
 				invalid_extrusion_shadow.position = ray_extrusion
 				invalid_extrusion_shadow.look_at_from_position(ray_extrusion, camera_position - max_distance * camera_basis.z, camera_basis.y)
-				extrusion_distance_label.text += " (Can't build here)"
+				extrusion_distance_label.text += " (Build overlaps with invalid surface)"
 		else:
 			extrusion_shadow.visible = false
 			invalid_extrusion_shadow.visible = true

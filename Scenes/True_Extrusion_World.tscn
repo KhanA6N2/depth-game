@@ -134,7 +134,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
 [node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Head"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/Head/Camera3D"]
-visible = false
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_p70al")
 surface_material_override/0 = SubResource("ShaderMaterial_45d1s")

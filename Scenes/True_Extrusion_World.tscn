@@ -1,14 +1,16 @@
-[gd_scene load_steps=21 format=3 uid="uid://cw61r74caqr3c"]
+[gd_scene load_steps=26 format=3 uid="uid://bm5y4pd60odcs"]
 
-[ext_resource type="Script" uid="uid://42nkmre6b3ht" path="res://Scripts/Player.gd" id="1_a02cp"]
-[ext_resource type="Script" uid="uid://d1wduwlo2weam" path="res://Scripts/Block_Placement_Discrete.gd" id="1_q2d71"]
-[ext_resource type="Texture2D" uid="uid://bdhr3gkkax1ct" path="res://fat_junco.jpg" id="2_p70al"]
-[ext_resource type="PackedScene" uid="uid://di4oip26vhvkc" path="res://Scenes/Extrusion.tscn" id="2_uo7di"]
-[ext_resource type="Script" uid="uid://chpqq2ywlm34k" path="res://Scripts/cursor_indicator.gd" id="3_45d1s"]
-[ext_resource type="Shader" uid="uid://dbl41j56jko86" path="res://Shaders/depth_vizualizer.gdshader" id="4_gjpho"]
-[ext_resource type="PackedScene" uid="uid://cor5d7eaqam0n" path="res://Scenes/Extrusion_Shadow.tscn" id="4_uo7di"]
-[ext_resource type="PackedScene" uid="uid://ok6k4f4e11q3" path="res://Scenes/Non_Buildable_Surface.tscn" id="6_45d1s"]
-[ext_resource type="Texture2D" uid="uid://6dt2y88xouua" path="res://color_gradient.png" id="8_kn06e"]
+[ext_resource type="Script" uid="uid://dll6q67i7nexo" path="res://Scripts/Extrusion_Placement.gd" id="1_vp1c7"]
+[ext_resource type="PackedScene" uid="uid://cq5w51fak8dpb" path="res://Scenes/True_Extrusion.tscn" id="2_e1q8r"]
+[ext_resource type="Texture2D" uid="uid://bdhr3gkkax1ct" path="res://fat_junco.jpg" id="3_bg6wg"]
+[ext_resource type="Script" uid="uid://chpqq2ywlm34k" path="res://Scripts/cursor_indicator.gd" id="4_1mmar"]
+[ext_resource type="Shader" uid="uid://b887v7rula1ge" path="res://Shaders/outline_shader.gdshader" id="5_7f7sg"]
+[ext_resource type="Material" uid="uid://bx5rtt3fvm1ma" path="res://Shaders/True_Extrusion_Shadow.tres" id="5_bg6wg"]
+[ext_resource type="Script" uid="uid://42nkmre6b3ht" path="res://Scripts/Player.gd" id="6_aqpgs"]
+[ext_resource type="PackedScene" uid="uid://b7bi4bw7dk8xh" path="res://Scenes/Invalid_Extrusion_Shadow.tscn" id="7_bg6wg"]
+[ext_resource type="Shader" uid="uid://dbl41j56jko86" path="res://Shaders/depth_vizualizer.gdshader" id="7_np1cg"]
+[ext_resource type="PackedScene" uid="uid://ok6k4f4e11q3" path="res://Scenes/Non_Buildable_Surface.tscn" id="8_mxx6n"]
+[ext_resource type="Texture2D" uid="uid://6dt2y88xouua" path="res://color_gradient.png" id="9_ll283"]
 
 [sub_resource type="Environment" id="Environment_45d1s"]
 background_mode = 1
@@ -19,15 +21,34 @@ ambient_light_color = Color(1, 1, 1, 1)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_p70al")
+"texture": ExtResource("3_bg6wg")
 }],
 "loop": true,
 "name": &"default",
 "speed": 5.0
 }]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p70al"]
-albedo_color = Color(0, 0, 0, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tgcyy"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t553l"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e1q8r"]
+render_priority = 0
+shader = ExtResource("5_7f7sg")
+shader_parameter/color = Color(1, 0, 0, 1)
+shader_parameter/border_width = 0.1
+shader_parameter/pattern = true
+shader_parameter/line_number = 50.0
+shader_parameter/pulse = false
+shader_parameter/pulse_speed = 0.0
+shader_parameter/line_movement = true
+shader_parameter/line_movement_speed = 20.0
+shader_parameter/wave = false
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yb334"]
+next_pass = SubResource("ShaderMaterial_e1q8r")
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_fo5ed"]
 
@@ -39,8 +60,8 @@ flip_faces = true
 size = Vector2(2, 2)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_45d1s"]
-render_priority = 0
-shader = ExtResource("4_gjpho")
+render_priority = 1
+shader = ExtResource("7_np1cg")
 shader_parameter/head_position = Vector3(0, 0, 0)
 shader_parameter/distance_cutoff = 20.0
 
@@ -56,8 +77,8 @@ gradient = SubResource("Gradient_820l3")
 gradient = SubResource("Gradient_5odek")
 
 [node name="World" type="Node3D"]
-script = ExtResource("1_q2d71")
-extrusion_scene = ExtResource("2_uo7di")
+script = ExtResource("1_vp1c7")
+extrusion_scene = ExtResource("2_e1q8r")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_45d1s")
@@ -65,17 +86,40 @@ environment = SubResource("Environment_45d1s")
 [node name="CursorIndicator" type="AnimatedSprite2D" parent="."]
 visible = false
 sprite_frames = SubResource("SpriteFrames_y7y61")
-script = ExtResource("3_45d1s")
+script = ExtResource("4_1mmar")
 
-[node name="Ray" type="CSGSphere3D" parent="."]
+[node name="Top_Left_Ray" type="CSGSphere3D" parent="."]
+visible = false
 radius = 0.1
-material = SubResource("StandardMaterial3D_p70al")
+material = ExtResource("5_bg6wg")
 
-[node name="Extrusion_Shadow" parent="." instance=ExtResource("4_uo7di")]
+[node name="Bottom_Left_Ray" type="CSGSphere3D" parent="."]
+visible = false
+radius = 0.1
+material = SubResource("StandardMaterial3D_tgcyy")
+
+[node name="Top_Right_Ray" type="CSGSphere3D" parent="."]
+visible = false
+radius = 0.1
+material = SubResource("StandardMaterial3D_t553l")
+
+[node name="Bottom_Right_Ray" type="CSGSphere3D" parent="."]
+visible = false
+radius = 0.1
+
+[node name="Extrusion_Killer_Ray" type="CSGSphere3D" parent="."]
+radius = 0.1
+material = ExtResource("5_bg6wg")
+
+[node name="TrueExtrusionShadow" type="CSGPolygon3D" parent="."]
+polygon = PackedVector2Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5)
+material = SubResource("StandardMaterial3D_yb334")
+
+[node name="InvalidExtrusionShadow" parent="." instance=ExtResource("7_bg6wg")]
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
 collision_mask = 2
-script = ExtResource("1_a02cp")
+script = ExtResource("6_aqpgs")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
 mesh = SubResource("CapsuleMesh_fo5ed")
@@ -136,43 +180,43 @@ collision_layer = 2
 collision_mask = 0
 size = Vector3(3, 1, 3)
 
-[node name="NonBuildableSurface" parent="." instance=ExtResource("6_45d1s")]
+[node name="NonBuildableSurface" parent="." instance=ExtResource("8_mxx6n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.95, 0)
 collision_layer = 2
 collision_mask = 0
 size = Vector3(3, 0.1, 3)
 
-[node name="NonBuildableSurface2" parent="." instance=ExtResource("6_45d1s")]
+[node name="NonBuildableSurface2" parent="." instance=ExtResource("8_mxx6n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.95, -25)
 collision_layer = 2
 collision_mask = 0
 size = Vector3(3, 0.1, 13)
 
-[node name="NonBuildableSurface3" parent="." instance=ExtResource("6_45d1s")]
+[node name="NonBuildableSurface3" parent="." instance=ExtResource("8_mxx6n")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 16.5, -35.45)
 collision_layer = 2
 collision_mask = 0
 size = Vector3(2.8, 0.1, 15)
 
-[node name="NonBuildableSurface4" parent="." instance=ExtResource("6_45d1s")]
+[node name="NonBuildableSurface4" parent="." instance=ExtResource("8_mxx6n")]
 transform = Transform3D(-4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, -1.45, 18, -33.5)
 collision_layer = 2
 collision_mask = 0
 size = Vector3(4, 0.1, 18)
 
-[node name="NonBuildableSurface5" parent="." instance=ExtResource("6_45d1s")]
+[node name="NonBuildableSurface5" parent="." instance=ExtResource("8_mxx6n")]
 transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 1.45, 18, -33.5)
 collision_layer = 2
 collision_mask = 0
 size = Vector3(4, 0.1, 18)
 
-[node name="NonBuildableSurface6" parent="." instance=ExtResource("6_45d1s")]
+[node name="NonBuildableSurface6" parent="." instance=ExtResource("8_mxx6n")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 19.5, -31.55)
 collision_layer = 2
 collision_mask = 0
 size = Vector3(2.8, 0.1, 15)
 
-[node name="NonBuildableSurface7" parent="." instance=ExtResource("6_45d1s")]
+[node name="NonBuildableSurface7" parent="." instance=ExtResource("8_mxx6n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 26.95, -33.55)
 collision_layer = 2
 collision_mask = 0
@@ -191,7 +235,7 @@ offset_bottom = 98.0
 max_value = 20.0
 step = 0.25
 value = 20.0
-texture_progress = ExtResource("8_kn06e")
+texture_progress = ExtResource("9_ll283")
 
 [node name="Label" type="Label" parent="Control/ExtrusionDistanceBar"]
 layout_mode = 0

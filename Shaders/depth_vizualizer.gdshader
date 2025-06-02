@@ -110,14 +110,17 @@ void fragment()
 	vec3 c = textureLod(screen_texture, SCREEN_UV, 0.0).rgb;
 
 	// Visualize distance
-	if (c.rgb == vec3(0., 0., 0.))
-		ALBEDO.rgb = vec3(0., 0., 0.);
-	else if (c.rgb == vec3(1., 0., 0.))
-		ALBEDO.rgb = vec3(0., 0., 0.);
-	else if (c.rgb == vec3(0., 1., 0.))
-		ALBEDO.rgb = vec3(1., 1., 1.);
-	else if (c.rgb == vec3(0., 0., 1.))
-		ALBEDO.rgb = vec3(0.5, 0.5, 0.5);
+	if (dist < distance_cutoff)
+	{
+		if (c.rgb == vec3(1., 0., 0.))
+			ALBEDO.rgb = vec3(0., 0., 0.);
+		else if (c.rgb == vec3(0., 1., 0.))
+			ALBEDO.rgb = vec3(1., 1., 1.);
+		else if (c.rgb == vec3(0., 0., 1.))
+			ALBEDO.rgb = vec3(0.5, 0.5, 0.5);
+		else
+			ALBEDO.rgb = srgb_to_linear(depth_rgb(dist/(distance_cutoff/(4./6.))));
+	}
 	else
 		ALBEDO.rgb = srgb_to_linear(depth_rgb(dist/(distance_cutoff/(4./6.))));
 		//ALBEDO.rgb = srgb_to_linear(among(dist/(distance_cutoff/(4./6.))));

@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://d0hfyu3qd02uu"]
 
-[ext_resource type="Script" uid="uid://1hsct8be6egm" path="res://Scripts/Block_Placement.gd" id="1_5nsto"]
+[ext_resource type="Script" uid="uid://1hsct8be6egm" path="res://Scripts/Block_Placement_Original.gd" id="1_5nsto"]
 [ext_resource type="Script" uid="uid://42nkmre6b3ht" path="res://Scripts/Player.gd" id="1_a02cp"]
 [ext_resource type="Texture2D" uid="uid://bdhr3gkkax1ct" path="res://fat_junco.jpg" id="2_p70al"]
 [ext_resource type="Script" uid="uid://chpqq2ywlm34k" path="res://Scripts/cursor_indicator.gd" id="3_45d1s"]

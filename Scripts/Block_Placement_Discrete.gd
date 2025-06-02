@@ -13,7 +13,7 @@ extends Node3D
 @onready var extrusion_angle_bar_pos = $Control/ExtrusionAngleBarPositive
 @onready var extrusion_angle_label = $Control/ExtrusionAngleBarNegative/Label
 
-# Instantiate scene https://www.youtube.com/watch?v=ZwXPV5v9NaU
+# Instantiate scene tutorial https://www.youtube.com/watch?v=ZwXPV5v9NaU
 @export var extrusion_scene : PackedScene
 
 var distance_cutoff
@@ -33,22 +33,6 @@ func _process(_delta: float) -> void:
 	shader.set_shader_parameter("head_position",head.global_position)
 	distance_cutoff = shader.get_shader_parameter("distance_cutoff")
 	
-	# Increase distance cutoff
-	#if Input.is_action_just_released("scroll_up"):
-		#shader.set_shader_parameter("distance_cutoff",distance_cutoff + 1)
-	#if Input.is_action_pressed("sprint") and Input.is_action_just_released("scroll_up"):
-		#shader.set_shader_parameter("distance_cutoff",distance_cutoff + 0.1)
-	#if Input.is_action_pressed("up_arrow"):
-		#shader.set_shader_parameter("distance_cutoff",distance_cutoff + 1)
-	
-	# Decrease distance cutoff
-	#if Input.is_action_just_released("scroll_down"):
-		#shader.set_shader_parameter("distance_cutoff",distance_cutoff - 1)
-	#if Input.is_action_pressed("sprint") and Input.is_action_just_released("scroll_down"):
-		#shader.set_shader_parameter("distance_cutoff",distance_cutoff - 0.1)
-	#if Input.is_action_pressed("down_arrow"):
-		#shader.set_shader_parameter("distance_cutoff",distance_cutoff - 1)
-	
 	# Ray-casting https://docs.godotengine.org/en/stable/classes/class_raycast3d.html#class-raycast3d
 	var space_state = get_world_3d().direct_space_state
 	var ray_origin = camera.global_position
@@ -57,7 +41,7 @@ func _process(_delta: float) -> void:
 	var ray_hit
 	ray_length = distance_cutoff
 	var collided_object
-	#var collided_object
+	
 	if ray_length:
 		var ray_end = ray_origin + look_direction * ray_length
 		var query = PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
@@ -67,6 +51,7 @@ func _process(_delta: float) -> void:
 			# Store collided object
 			collided_object = result["collider"]
 			ray_hit = result["position"]
+	
 	# Display ray hits
 	if ray_hit and building_on:
 		ray.visible = true

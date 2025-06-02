@@ -83,6 +83,15 @@ func _process(delta: float) -> void:
 				collided_extrusion = result["collider"]
 				extrusion_killer_hit = result["position"]
 	
+	# Update extrusion angle text
+	if extrusion_angle <= 0:
+		extrusion_angle_bar_neg.value = -(extrusion_angle + 10)
+		extrusion_angle_bar_pos.value = 0
+	else:
+		extrusion_angle_bar_pos.value = extrusion_angle
+		extrusion_angle_bar_neg.value = -10
+	extrusion_angle_label.text = str(extrusion_angle)
+	
 	# Display extrusions
 	extrusion_distance_bar.value = extrusion_distance
 	if building_on:
@@ -129,14 +138,6 @@ func _process(delta: float) -> void:
 		extrusion_killer_ray.visible = false
 		extrusion_shadow.visible = false
 		invalid_extrusion_shadow.visible = false
-	
-	if extrusion_angle <= 0:
-		extrusion_angle_bar_neg.value = -(extrusion_angle + 10)
-		extrusion_angle_bar_pos.value = 0
-	else:
-		extrusion_angle_bar_pos.value = extrusion_angle
-		extrusion_angle_bar_neg.value = -10
-	extrusion_angle_label.text = str(extrusion_angle)
 	
 	# Extrusion distance adjustment
 	if Input.is_action_pressed("ctrl") and Input.is_action_just_released("scroll_up"):

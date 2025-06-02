@@ -167,14 +167,14 @@ collision_mask = 0
 size = Vector3(3, 10, 1)
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.5, -34)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.5, -35.5)
 use_collision = true
 collision_layer = 2
 collision_mask = 0
-size = Vector3(3, 1, 3)
+size = Vector3(3, 1, 6)
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 23.5, -37)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 23.5, -40)
 use_collision = true
 collision_layer = 2
 collision_mask = 0
@@ -193,22 +193,22 @@ collision_mask = 0
 size = Vector3(3, 0.1, 13)
 
 [node name="NonBuildableSurface3" parent="." instance=ExtResource("8_mxx6n")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 16.5, -35.45)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 16.5, -38.45)
 collision_layer = 2
 collision_mask = 0
 size = Vector3(2.8, 0.1, 15)
 
 [node name="NonBuildableSurface4" parent="." instance=ExtResource("8_mxx6n")]
-transform = Transform3D(-4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, -1.45, 18, -33.5)
+transform = Transform3D(-4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, -1.45, 18, -35)
 collision_layer = 2
 collision_mask = 0
-size = Vector3(4, 0.1, 18)
+size = Vector3(7, 0.1, 18)
 
 [node name="NonBuildableSurface5" parent="." instance=ExtResource("8_mxx6n")]
-transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 1.45, 18, -33.5)
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 1.45, 18, -35)
 collision_layer = 2
 collision_mask = 0
-size = Vector3(4, 0.1, 18)
+size = Vector3(7, 0.1, 18)
 
 [node name="NonBuildableSurface6" parent="." instance=ExtResource("8_mxx6n")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 19.5, -31.55)
@@ -217,10 +217,10 @@ collision_mask = 0
 size = Vector3(2.8, 0.1, 15)
 
 [node name="NonBuildableSurface7" parent="." instance=ExtResource("8_mxx6n")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 26.95, -33.55)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 26.95, -35.05)
 collision_layer = 2
 collision_mask = 0
-size = Vector3(2.8, 0.1, 3.9)
+size = Vector3(2.8, 0.1, 6.9)
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3

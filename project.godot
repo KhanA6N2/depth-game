@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Depth Game"
-run/main_scene="uid://bm5y4pd60odcs"
+run/main_scene="uid://d2fqgwkmrlicw"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 

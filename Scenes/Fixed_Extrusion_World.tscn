@@ -1,0 +1,266 @@
+[gd_scene load_steps=21 format=3 uid="uid://d2fqgwkmrlicw"]
+
+[ext_resource type="Script" uid="uid://p1grkuow6ago" path="res://Scripts/Fixed_Extrusion.gd" id="1_fbhai"]
+[ext_resource type="PackedScene" uid="uid://hqonk0mu171e" path="res://Scenes/Fixed_Extrusion.tscn" id="2_agfwv"]
+[ext_resource type="Material" uid="uid://bx5rtt3fvm1ma" path="res://Shaders/True_Extrusion_Shadow.tres" id="5_a4ayf"]
+[ext_resource type="Shader" uid="uid://cd7rouumoyogc" path="res://Shaders/outline_shader.gdshader" id="6_p77sq"]
+[ext_resource type="PackedScene" uid="uid://b7bi4bw7dk8xh" path="res://Scenes/Invalid_Extrusion_Shadow.tscn" id="7_amcnt"]
+[ext_resource type="Script" uid="uid://42nkmre6b3ht" path="res://Scripts/Player.gd" id="8_1swl3"]
+[ext_resource type="Shader" uid="uid://dbl41j56jko86" path="res://Shaders/depth_vizualizer.gdshader" id="9_ap3u1"]
+[ext_resource type="PackedScene" uid="uid://ok6k4f4e11q3" path="res://Scenes/Non_Buildable_Surface.tscn" id="10_fna7b"]
+[ext_resource type="Texture2D" uid="uid://6dt2y88xouua" path="res://color_gradient.png" id="11_5ex2f"]
+
+[sub_resource type="Environment" id="Environment_45d1s"]
+background_mode = 1
+background_color = Color(1, 1, 1, 1)
+ambient_light_color = Color(1, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e1q8r"]
+render_priority = 0
+shader = ExtResource("6_p77sq")
+shader_parameter/color = Color(1, 0, 0, 1)
+shader_parameter/border_width = 0.1
+shader_parameter/pattern = true
+shader_parameter/line_number = 50.0
+shader_parameter/pulse = false
+shader_parameter/pulse_speed = 0.0
+shader_parameter/line_movement = true
+shader_parameter/line_movement_speed = 20.0
+shader_parameter/wave = false
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yb334"]
+next_pass = SubResource("ShaderMaterial_e1q8r")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_fo5ed"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_5ukr8"]
+points = PackedVector3Array(-0.125207, -0.532801, -0.480507, 0.0227831, 0.47607, 0.498884, 0.169713, 0.559144, 0.464172, 0.231051, -0.803591, 0.320455, 0.40741, 0.651043, -0.243523, -0.482789, 0.594843, 0.0822132, -0.362868, -0.682312, 0.289697, 0.469044, -0.654529, -0.0662713, -0.127444, 0.842701, -0.338103, -0.393435, -0.683942, -0.244717, 0.438255, 0.623309, 0.200849, 0.0841477, 0.977454, 0.114795, -0.0682023, -0.976458, -0.12927, 0.20055, -0.563129, -0.451454, -0.185527, 0.595453, -0.453475, -0.273363, 0.592268, 0.407754, -0.00693649, -0.476823, 0.49966, 0.375821, -0.588614, 0.316955, 0.111579, 0.563059, -0.481177, -0.41725, 0.527866, -0.270497, -0.484546, -0.596972, -0.0665097, -0.279747, 0.908561, 0.0533361, -0.250197, -0.880712, 0.205319, 0.263647, -0.902771, -0.127394, 0.293368, 0.871526, -0.157196, 0.373412, -0.526319, -0.328246, 0.499663, 0.476641, -0.00688856, 0.0531056, 0.875001, 0.324703, -0.154543, -0.590854, 0.465879, -0.0972799, -0.782358, -0.398188, -0.387649, -0.498171, 0.31565, -0.30068, -0.587995, -0.388901)
+
+[sub_resource type="QuadMesh" id="QuadMesh_p70al"]
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_45d1s"]
+render_priority = 1
+shader = ExtResource("9_ap3u1")
+shader_parameter/head_position = Vector3(0, 0, 0)
+shader_parameter/distance_cutoff = 20.0
+
+[sub_resource type="Gradient" id="Gradient_820l3"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fupx2"]
+gradient = SubResource("Gradient_820l3")
+
+[sub_resource type="Gradient" id="Gradient_5odek"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rkc2q"]
+gradient = SubResource("Gradient_5odek")
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_fbhai")
+extrusion_scene = ExtResource("2_agfwv")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_45d1s")
+
+[node name="Extrusion_Killer_Ray" type="CSGSphere3D" parent="."]
+radius = 0.1
+material = ExtResource("5_a4ayf")
+
+[node name="TrueExtrusionShadow" type="CSGBox3D" parent="."]
+visible = false
+material = SubResource("StandardMaterial3D_yb334")
+
+[node name="InvalidExtrusionShadow" parent="." instance=ExtResource("7_amcnt")]
+visible = false
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+collision_mask = 2
+script = ExtResource("8_1swl3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+mesh = SubResource("CapsuleMesh_fo5ed")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.043726, 0.019577, -0.0630808)
+shape = SubResource("ConvexPolygonShape3D_5ukr8")
+
+[node name="Head" type="Node3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Head"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/Head/Camera3D"]
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_p70al")
+surface_material_override/0 = SubResource("ShaderMaterial_45d1s")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
+use_collision = true
+collision_layer = 2
+collision_mask = 0
+size = Vector3(3, 1, 3)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, -25)
+use_collision = true
+collision_layer = 2
+collision_mask = 0
+size = Vector3(3, 1, 13)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -11.5, -13.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 0
+size = Vector3(3, 1, 25)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -32)
+use_collision = true
+collision_layer = 2
+collision_mask = 0
+size = Vector3(3, 10, 1)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.5, -35.5)
+use_collision = true
+collision_layer = 2
+collision_mask = 0
+size = Vector3(3, 1, 6)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 23.5, -40)
+use_collision = true
+collision_layer = 2
+collision_mask = 0
+size = Vector3(3, 1, 3)
+
+[node name="NonBuildableSurface" parent="." instance=ExtResource("10_fna7b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.95, 0)
+collision_layer = 2
+collision_mask = 0
+size = Vector3(3, 0.1, 3)
+
+[node name="NonBuildableSurface2" parent="." instance=ExtResource("10_fna7b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.95, -25)
+collision_layer = 2
+collision_mask = 0
+size = Vector3(3, 0.1, 13)
+
+[node name="NonBuildableSurface3" parent="." instance=ExtResource("10_fna7b")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 16.5, -38.45)
+collision_layer = 2
+collision_mask = 0
+size = Vector3(2.8, 0.1, 15)
+
+[node name="NonBuildableSurface4" parent="." instance=ExtResource("10_fna7b")]
+transform = Transform3D(-4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, -1.45, 19.5, -35)
+collision_layer = 2
+collision_mask = 0
+size = Vector3(7, 0.1, 21)
+
+[node name="NonBuildableSurface5" parent="." instance=ExtResource("10_fna7b")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 1.45, 19.5, -35)
+collision_layer = 2
+collision_mask = 0
+size = Vector3(7, 0.1, 21)
+
+[node name="NonBuildableSurface6" parent="." instance=ExtResource("10_fna7b")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 21, -31.55)
+collision_layer = 2
+collision_mask = 0
+size = Vector3(2.8, 0.1, 18)
+
+[node name="NonBuildableSurface7" parent="." instance=ExtResource("10_fna7b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 29.95, -35.05)
+collision_layer = 2
+collision_mask = 0
+size = Vector3(2.8, 0.1, 6.9)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="ExtrusionDistanceBar" type="TextureProgressBar" parent="Control"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 50.0
+offset_right = 740.0
+offset_bottom = 98.0
+max_value = 20.0
+step = 0.25
+value = 20.0
+texture_progress = ExtResource("11_5ex2f")
+
+[node name="Label" type="Label" parent="Control/ExtrusionDistanceBar"]
+layout_mode = 0
+offset_left = 272.0
+offset_right = 368.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="Control/ExtrusionDistanceBar"]
+layout_mode = 0
+offset_right = 12.0
+offset_bottom = 48.0
+color = Color(0, 0, 0, 1)
+
+[node name="ExtrusionAngleBarPositive" type="TextureProgressBar" parent="Control"]
+layout_mode = 0
+offset_left = 2200.0
+offset_top = 720.0
+offset_right = 2400.0
+offset_bottom = 768.0
+rotation = -1.5708
+max_value = 10.0
+nine_patch_stretch = true
+texture_progress = SubResource("GradientTexture1D_fupx2")
+
+[node name="ExtrusionAngleBarNegative" type="TextureProgressBar" parent="Control"]
+layout_mode = 0
+offset_left = 2200.0
+offset_top = 920.0
+offset_right = 2400.0
+offset_bottom = 968.0
+rotation = -1.5708
+min_value = -10.0
+max_value = 0.0
+value = -10.0
+fill_mode = 1
+nine_patch_stretch = true
+texture_progress = SubResource("GradientTexture1D_rkc2q")
+
+[node name="Label" type="Label" parent="Control/ExtrusionAngleBarNegative"]
+layout_mode = 0
+offset_left = 224.0
+offset_right = 272.0
+offset_bottom = 48.0
+rotation = 1.5708
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TestingBlock1" type="CSGBox3D" parent="."]
+transform = Transform3D(0.00162311, 0.734677, -0.678415, 0, 0.678416, 0.734678, 0.999999, -0.00119246, 0.00110114, 0, 0, -2.89891)
+visible = false
+collision_layer = 2
+collision_mask = 0
+size = Vector3(1, 0.5, 2.63)
+
+[node name="TestingBlock2" type="CSGBox3D" parent="."]
+transform = Transform3D(0.302187, -0.700331, 0.646699, 9.19919e-09, 0.678416, 0.734678, -0.953249, -0.22201, 0.205009, 1.42883, 0, -2.89891)
+visible = false
+collision_layer = 2
+collision_mask = 0
+size = Vector3(1, 0.5, 2.63)

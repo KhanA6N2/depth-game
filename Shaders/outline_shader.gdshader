@@ -1,7 +1,9 @@
-// https://pastebin.com/716RmTtj
+// https://www.youtube.com/watch?v=9JuZV6Xeo-w https://pastebin.com/716RmTtj
+// https://godotshaders.com/shader/the-simplest-outline-shader-improved/ (not used)
+// https://godotshaders.com/shader/object-outline-shader/
 shader_type spatial;
 
-render_mode blend_mix, unshaded, cull_front;
+render_mode unshaded, cull_front;
 
 uniform vec3 color : source_color = vec3(1,0,0);
 uniform float border_width : hint_range(0,1,0.001);
@@ -30,32 +32,31 @@ void vertex() {
 
 void fragment() {
 	ALBEDO = color.xyz;
-	if (pattern) 
+	if (pattern)
 	{
 		vec2 uv = VERTEX.xy * line_number;
 		ALBEDO = squarify(sin(uv.x + uv.y)) * color.xyz;
- 
+
 		if (pulse)
 		{
 			ALBEDO = squarify(sin(uv.x + uv.y)) * color.xyz * sin(TIME * pulse_speed);
 		}
- 
+
 		if (line_movement)
 		{
 			ALBEDO = squarify(sin(uv.x + uv.y + TIME * line_movement_speed)) * color.xyz;
 		}
- 
+
 		if (pulse && line_movement)
 		{
 			ALBEDO = squarify(sin(uv.x + uv.y + TIME * line_movement_speed)) * color.xyz * sin(TIME * pulse_speed);
 		}
 	}
- 
+
 	if (wave)
 	{
 		vec2 uv = VERTEX.xy * line_number;
 		ALBEDO = sin(uv.xxx + TIME * line_movement_speed) * color.xyz;
 	}
- 
-}
 
+}
